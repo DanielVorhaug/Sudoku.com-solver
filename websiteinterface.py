@@ -10,9 +10,15 @@ from pytesseract import *
 pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract"
 
 
-pixelX_offset = 26
-pixelY_offset = 262
-square_side = 65
+pixelX_offset = 26      # X-coordinate of top-left corner of sudoku
+pixelY_offset = 262     # Y-coordinate of top-left corner of sudoku
+square_side = 65        # Width of a square in the sudoku
+
+# Coorinates of the "new game" buttons
+new_game_btn_1_X = 850
+new_game_btn_1_Y = 172
+new_game_btn_2_X = 770
+new_game_btn_2_Y = 320
 
 
 def read_from_webpage():
@@ -40,17 +46,10 @@ def which_number_in_square(image_of_sudoku, pixelX, pixelY, square_side):
     return None
 
 
-def execute_list_of_changes(list_of_changes):
-    for change in list_of_changes:
-        fill_square(change[0], change[1], change[2])
-
-
 def click(x, y):
     win32api.SetCursorPos((x, y))
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
-    time.sleep(0.01)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,
-                         0, 0)  # lifts mouse button
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
 
 def square_to_pixel_coordinate(squareX, squareY):
@@ -64,3 +63,15 @@ def fill_square(number, squareX, squareY):
     click(pixelX, pixelY)
     keyboard.press_and_release(str(number))
     time.sleep(0.05)
+
+
+def new_game():
+    click(new_game_btn_1_X, new_game_btn_1_Y)
+    time.sleep(0.5)
+    click(new_game_btn_2_X, new_game_btn_2_Y)
+    time.sleep(2)
+
+
+# def execute_list_of_changes(list_of_changes):
+#     for change in list_of_changes:
+#         fill_square(change[0], change[1], change[2])
